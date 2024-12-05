@@ -3,25 +3,24 @@ const successColor: string = "#23ff23";
 const warningColor: string = "#ffff23";
 const errorColor: string = "#ff2323";
 
-export class Log {
-    static success(message: string) {
-        console.log(`%c ${message}`,`color: ${successColor}`);
-
-    }
-
-    static warning(message: string) {
-        console.log(`%c ${message}`,`color: ${warningColor}`);
-
-    }
-    
-    static info(message: string) {
-        console.log(`%c ${message}`,`color: ${infoColor}`);
-
-    }
-    
-    static error(message: string) {
-        console.log(`%c ${message}`,`color: ${errorColor}; font-weight: bold`);
-
-    }
-    
+function logMessage(message: string, color: string, fontWeight: string = "") {
+    console.log(`%c ${message}`, `color: ${color}; ${fontWeight}`);
 }
+
+export const customConsole = {
+    success(message: string) {
+        logMessage(message, successColor);
+    },
+
+    warning(message: string) {
+        logMessage(message, warningColor);
+    },
+
+    info(message: string) {
+        logMessage(message, infoColor);
+    },
+
+    error(message: string) {
+        logMessage(message, errorColor, "font-weight: bold");
+    }
+};
