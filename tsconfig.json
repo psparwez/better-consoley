@@ -3,16 +3,14 @@
         "strict": true,
         "noImplicitAny": true,
         "esModuleInterop": true,
-        "strictNullChecks":true,
-        "target": "ES2022",
-        "moduleResolution":"node10",
+        "strictNullChecks": true,
+        "target": "ES6",
+        "moduleResolution": "node",
         "module": "commonjs",
         "declaration": true,
         "isolatedModules": true,
-        "noEmit": true,
-        "outDir": "./dist",
-
+        "outDir": "./dist"
     },
     "include": ["src"],
-    "exclude": ["node_modules", "**/__tests__/*"],
+    "exclude": ["node_modules"]
 }
