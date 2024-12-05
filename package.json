@@ -1,0 +1,32 @@
+{
+  "name": "better-consoley",
+  "description": "Better-consoley It is a drop-in replacement for Node's default console that provides additional colors in console",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "prepare": "npm run build"
+  },
+  "keywords": [
+    "console",
+    "better-consoley",
+    "colorful-console"
+  ],
+  "author": "PS Parwez",
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "^5.7.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/psparwez/better-consoley.git"
+  },
+  "homepage": "https://github.com/psparwez/better-consoley#readme",
+  "bugs": {
+    "url": "https://github.com/ps-parwez/better-consoley/issues"
+  },
+  "files": [
+    "dist/**/*"
+  ]
+}
