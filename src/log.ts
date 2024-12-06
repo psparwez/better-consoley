@@ -56,8 +56,16 @@ class CustomConsole {
     logMessage(message, this.colors.error, "font-weight: bold");
   }
 
-  logTable(data: any[]) {
-    logTable(data); 
+  // logTable(data: any[]) {
+  //   logTable(data); 
+  // }
+
+  table(data: any[]) {
+    if (!Array.isArray(data) || data.length === 0) {
+      console.error("%cInvalid data format for table.", `color: ${this.colors.error}`);
+      return;
+    }
+    logTable(data);
   }
 
   log(level: LogLevel, message: string) {
@@ -77,7 +85,7 @@ if (typeof window !== "undefined") {
     warning: customConsoleInstance.warning.bind(customConsoleInstance),
     info: customConsoleInstance.info.bind(customConsoleInstance),
     error: customConsoleInstance.error.bind(customConsoleInstance),
-    table: customConsoleInstance.logTable.bind(customConsoleInstance), 
+    table: originalConsole.table,
   };
 }
 

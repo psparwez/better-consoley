@@ -1,6 +1,6 @@
-import Table from "cli-table"
+import Table from 'cli-table';
 
-
+// Helper function to convert HEX color to ANSI escape codes
 function hexToAnsi(hex: string): string {
   const r = parseInt(hex.slice(1, 3), 16);
   const g = parseInt(hex.slice(3, 5), 16);
@@ -12,32 +12,47 @@ export interface LogTableData {
   [key: string]: any; 
 }
 
-// log a table with custom-colored headers
+// Check if the environment is Node.js (detect `process` globally)
+const isNode = typeof process !== 'undefined' && process.versions != null && process.versions.node != null;
+
+// Log a table with custom-colored headers
 export function logTable(data: LogTableData[]): void {
   if (!Array.isArray(data) || data.length === 0 || typeof data[0] !== 'object') {
     console.error('Invalid data format. Please provide an array of objects.');
     return;
   }
 
-  // Extract headers from the first object
-  const headers = Object.keys(data[0]);
-  headers.unshift('(index)'); // Add an index column
+  // If it's running in Node.js, use cli-table, else use default console.table for browser
+  if (isNode) {
+    // Extract headers from the first object
+    const headers = Object.keys(data[0]);
+    headers.unshift('(index)'); // Add an index column
 
-  // Calculate column widths
-  const colWidths = headers.map((_, i) => calculateColWidth(data, i));
+    // Calculate column widths
+    const colWidths = headers.map((_, i) => calculateColWidth(data, i));
 
-  // Create the table instance with headers and column widths
-  const table = new Table({
-    head: headers.map(header => `${hexToAnsi("#1ac6ff")}${header}\x1b[0m`), 
-    colWidths: colWidths
-  });
+    // Create the table instance with headers and column widths
+    const table = new Table({
+      head: headers.map(header => `${hexToAnsi("#1ac6ff")}${header}\x1b[0m`), 
+      colWidths: colWidths
+    });
 
-  data.forEach((row, rowIndex) => {
-    const rowValues = headers.slice(1).map(key => (key in row ? stringifyCell(row[key]) : ''));
-    table.push([rowIndex.toString(), ...rowValues]);
-  });
+    // Add rows
+    data.forEach((row, rowIndex) => {
+      const rowValues = headers.slice(1).map(key => (key in row ? stringifyCell(row[key]) : ''));
+      table.push([rowIndex.toString(), ...rowValues]);
+    });
 
-  console.log(table.toString());
+    console.log(table.toString());
+
+  } else {
+    // If it's in the browser, use default console.table
+    const formattedData = data.map((row, index) => {
+      return { "(index)": index, ...row };
+    });
+
+    console.table(formattedData);
+  }
 }
 
 // Calculate the column width based on the content
