@@ -1,4 +1,4 @@
-import { logTable } from "./log_tables";
+import chalk from "chalk";
 
 // Check if we're in a Node.js environment
 const isNodeEnvironment = typeof process !== "undefined" && process.versions != null && process.versions.node != null;
@@ -22,7 +22,13 @@ export type LogLevel = "info" | "success" | "warning" | "error";
 
 // Utility function to format messages with color and style
 function logMessage(message: string, color: string, fontWeight: string = "") {
-  console.log(`%c${message}`, `color: ${color}; ${fontWeight}`);
+  if (!isNodeEnvironment) {
+    // For browsers, we use the %c format specifier for CSS styling
+    console.log(`%c${message}`, `color: ${color}; ${fontWeight}`);
+  } else {
+    // For Node.js, use chalk for colored output
+    console.log(chalk.hex(color)(message));
+  }
 }
 
 // Extend the global Console type to add custom methods
@@ -62,16 +68,16 @@ class CustomConsole {
   // Conditional table rendering based on environment (Node.js or browser)
   table(data: any[]) {
     if (!Array.isArray(data) || data.length === 0) {
-      console.error("%cInvalid data format for table.", `color: ${this.colors.error}`);
+      console.error("%c Invalid data format for table.", `color: ${this.colors.error}`);
       return;
     }
 
     if (isNodeEnvironment) {
-      // Use cli-table for Node.js
+      // Use cli-table3 for Node.js
       try {
-        const Table = require("cli-table3"); 
+        const Table = require("cli-table3");
         const table = new Table({
-          head: Object.keys(data[0]), // Assuming first item has headers
+          head: Object.keys(data[0]), // Assuming the first item has headers
           colWidths: Array(Object.keys(data[0]).length).fill(20),
         });
 
@@ -97,9 +103,11 @@ class CustomConsole {
 // Export the custom console object
 const customConsoleInstance = new CustomConsole();
 
-// Override global `console` methods
-if (typeof window !== "undefined" || typeof global !== "undefined") {
+// Override global `console` methods in both environments
+if (typeof globalThis !== "undefined") {
   const originalConsole = globalThis.console;
+
+  // Assign custom console methods to global `console`
   globalThis.console = {
     ...originalConsole,
     success: customConsoleInstance.success.bind(customConsoleInstance),
