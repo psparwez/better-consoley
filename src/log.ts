@@ -1,3 +1,5 @@
+import { logTable } from "./log_tables";
+
 // Color definitions
 const infoColor: string = "#10d3ff";
 const successColor: string = "#23ff23";
@@ -54,6 +56,10 @@ class CustomConsole {
     logMessage(message, this.colors.error, "font-weight: bold");
   }
 
+  logTable(data: any[]) {
+    logTable(data); 
+  }
+
   log(level: LogLevel, message: string) {
     this[level](message);
   }
@@ -71,6 +77,7 @@ if (typeof window !== "undefined") {
     warning: customConsoleInstance.warning.bind(customConsoleInstance),
     info: customConsoleInstance.info.bind(customConsoleInstance),
     error: customConsoleInstance.error.bind(customConsoleInstance),
+    table: customConsoleInstance.logTable.bind(customConsoleInstance), 
   };
 }
 

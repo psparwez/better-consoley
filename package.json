@@ -28,5 +28,9 @@
   },
   "files": [
     "dist/**/*"
-  ]
+  ],
+  "dependencies": {
+    "@types/cli-table": "^0.3.4",
+    "cli-table": "^0.3.11"
+  }
 }
