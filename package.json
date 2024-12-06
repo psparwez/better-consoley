@@ -1,9 +1,8 @@
 {
   "name": "better-consoley",
   "description": "Better-consoley It is a drop-in replacement for Node's default console that provides additional colors in console",
-  "version": "1.4.4",
+  "version": "1.4.5",
   "main": "dist/index.js",
-  "type": "module",
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc",
