@@ -1,6 +1,8 @@
 # Better consoley
 <br />
 
+[![npm version](https://img.shields.io/npm/v/better-consoley.svg)](https://www.npmjs.com/package/better-consoley)
+
 
 ![Screenshot](https://github.com/user-attachments/assets/b5833f57-70eb-40bb-836e-118bd356b61f)
 
