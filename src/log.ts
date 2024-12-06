@@ -1,5 +1,8 @@
 import { logTable } from "./log_tables";
 
+// Check if we're in a Node.js environment
+const isNodeEnvironment = typeof process !== "undefined" && process.versions != null && process.versions.node != null;
+
 // Color definitions
 const infoColor: string = "#10d3ff";
 const successColor: string = "#23ff23";
@@ -56,16 +59,34 @@ class CustomConsole {
     logMessage(message, this.colors.error, "font-weight: bold");
   }
 
-  // logTable(data: any[]) {
-  //   logTable(data); 
-  // }
-
+  // Conditional table rendering based on environment (Node.js or browser)
   table(data: any[]) {
     if (!Array.isArray(data) || data.length === 0) {
       console.error("%cInvalid data format for table.", `color: ${this.colors.error}`);
       return;
     }
-    logTable(data);
+
+    if (isNodeEnvironment) {
+      // Use cli-table for Node.js
+      try {
+        const Table = require("cli-table3"); 
+        const table = new Table({
+          head: Object.keys(data[0]), // Assuming first item has headers
+          colWidths: Array(Object.keys(data[0]).length).fill(20),
+        });
+
+        data.forEach((row) => {
+          table.push(Object.values(row));
+        });
+
+        console.log(table.toString());
+      } catch (err) {
+        console.error("Error loading cli-table3:", err);
+      }
+    } else {
+      // Use console.table for the browser
+      console.table(data);
+    }
   }
 
   log(level: LogLevel, message: string) {
@@ -77,7 +98,7 @@ class CustomConsole {
 const customConsoleInstance = new CustomConsole();
 
 // Override global `console` methods
-if (typeof window !== "undefined") {
+if (typeof window !== "undefined" || typeof global !== "undefined") {
   const originalConsole = globalThis.console;
   globalThis.console = {
     ...originalConsole,
@@ -85,7 +106,7 @@ if (typeof window !== "undefined") {
     warning: customConsoleInstance.warning.bind(customConsoleInstance),
     info: customConsoleInstance.info.bind(customConsoleInstance),
     error: customConsoleInstance.error.bind(customConsoleInstance),
-    table: originalConsole.table,
+    table: customConsoleInstance.table.bind(customConsoleInstance),
   };
 }
 
