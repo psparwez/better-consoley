@@ -16,7 +16,6 @@
   "author": "PS Parwez",
   "license": "MIT",
   "devDependencies": {
-    "@types/node": "^22.10.1",
     "typescript": "^5.7.2"
   },
   "repository": {
@@ -32,6 +31,7 @@
   ],
   "dependencies": {
     "@types/cli-table": "^0.3.4",
+    "@types/node": "^22.10.1",
     "cli-table": "^0.3.11"
   }
 }
